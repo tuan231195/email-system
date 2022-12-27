@@ -1,0 +1,38 @@
+{
+	"name": "@vdtn359/email-api",
+	"version": "0.0.0",
+	"private": true,
+	"main": "dist/index.js",
+	"scripts": {
+		"test": "jest --passWithNoTests",
+		"tsc": "tsc",
+		"clean": "rm -rf dist",
+		"lint": "eslint . --max-warnings=0",
+		"build": "swc --config-file ../../.swcrc ./src -d dist",
+		"start": "node-dev src/index.ts",
+		"start:prod": "node dist/index",
+		"package": "npm run prepare-workspace && npm run docker",
+		"prepare-workspace": "pnpm-isolate-workspace . --src-less-disable --src-less-prod-disable --workspaces-exclude-glob=src --src-files-exclude-glob=src --src-files-enable",
+		"docker": "DOCKER_BUILDKIT=1 docker build -t ${npm_package_config_docker}:${npm_package_version} . && docker tag ${npm_package_config_docker}:${npm_package_version} ${npm_package_config_docker}:latest",
+		"release": "release-it --ci -VV",
+		"plan-release": "release-it --ci --dry-run -VV",
+		"patch": "release-it -i patch --ci -VV",
+		"default": "echo default"
+	},
+	"dependencies": {
+		"@aws-sdk/client-s3": "^3.238.0",
+		"@nestjs/common": "^8.0.0",
+		"@nestjs/core": "^8.0.0",
+		"@sendgrid/mail": "^7.7.0",
+		"@vdtn359/nestjs-bootstrap": "1.0.7",
+		"aws-lambda": "^1.0.7",
+		"aws-serverless-fastify": "^3.0.0",
+		"dotenv-flow": "^3.2.0",
+		"reflect-metadata": "^0.1.13",
+		"class-transformer": "0.4.0",
+		"class-validator": "^0.13.2"
+	},
+	"devDependencies": {
+		"@types/aws-lambda": "^8.10.109"
+	}
+}
