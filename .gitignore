@@ -123,3 +123,13 @@ dist
 
 # turbo
 .turbo
+
+# dependencies
+node_modules
+
+# sst
+.sst
+.build
+
+# local env files
+.env*.local

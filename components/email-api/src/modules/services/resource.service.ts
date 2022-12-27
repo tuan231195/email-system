@@ -14,16 +14,14 @@ export class ResourceService {
 	}
 
 	async getAttachment(attachmentPath: string, encoding?: BufferEncoding) {
-		const content = await this.getContent(`attachments/${attachmentPath}`);
-
-		return encoding ? Buffer.from(content).toString(encoding) : content;
+		return this.getContent(`attachments/${attachmentPath}`, encoding);
 	}
 
 	getTemplate(template: string, language = 'en') {
-		return this.getContent(`templates/${template}/${language}`);
+		return this.getContent(`templates/${template}/${language}.txt`, 'utf-8');
 	}
 
-	private async getContent(key: string) {
+	private async getContent(key: string, encoding?: string) {
 		const s3Bucket = this.config.get('EMAIL_BUCKET')!;
 
 		const { Body } = await this.s3.send(
@@ -33,6 +31,6 @@ export class ResourceService {
 			})
 		);
 
-		return (await Body?.transformToString('utf-8')) ?? '';
+		return Body?.transformToString(encoding) ?? '';
 	}
 }

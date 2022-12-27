@@ -1,0 +1,5 @@
+{
+	"name": "email-system",
+	"region": "ap-southeast-2",
+	"main": "infra/stacks/index.ts"
+}

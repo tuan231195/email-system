@@ -5,7 +5,8 @@
 		"baseUrl": ".",
 		"paths": {
 			"@vdtn359/*": ["./node_modules/@vdtn359/*", "../../packages/*"],
-			"src/*": ["./src/*"]
+			"src/*": ["./src/*"],
+			"root/*": ["../../*"]
 		}
 	},
 	"include": ["./**/*.ts", ".eslintrc.js", ".release-it.js", "jest.config.js"]

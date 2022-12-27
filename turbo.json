@@ -22,15 +22,16 @@
 			"inputs": [
 				"**/*",
 				"tsconfig.json",
-				"tsconfig.json",
 				"../../tsconfig.json",
 				"../../.swcrc",
 				"jest.config.js",
 				".eslintrc.js",
 				".eslintignore",
+				"../../.eslintrc.js",
 				"../../.prettierrc",
 				"Dockerfile",
-				"../../.dockerignore"
+				"../../.dockerignore",
+				"../../docker-compose.yml"
 			],
 			"outputs": []
 		},
@@ -54,7 +55,15 @@
 			"outputs": []
 		},
 		"lint": {
-			"inputs": ["src/**", "package.json", "tests/**", ".eslintrc.js", ".eslintignore", "../../.prettierrc"],
+			"inputs": [
+				"src/**",
+				"package.json",
+				"tests/**",
+				".eslintrc.js",
+				".eslintignore",
+				"../../.eslintrc.js",
+				"../../.prettierrc"
+			],
 			"outputs": []
 		},
 		"watch": {

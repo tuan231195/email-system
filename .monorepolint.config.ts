@@ -2,8 +2,12 @@
 const { exec } = require('shelljs');
 
 const getPackagesMatching = (glob: string) => {
-	const packages = JSON.parse(exec(`pnpm ls --filter '${glob}' --json`, { silent: true }).stdout);
-	return packages.map((p: any) => p.name);
+	try {
+		const packages = JSON.parse(exec(`pnpm ls --filter '${glob}' --json`, { silent: true }).stdout);
+		return packages.map((p: any) => p.name);
+	} catch (err) {
+		return [];
+	}
 };
 
 module.exports = {
@@ -30,16 +34,8 @@ module.exports = {
 			{
 				options: {
 					file: '.release-it.js',
-					templateFile: '.monorepolint/templates/.release-it.apps.js',
+					templateFile: '.monorepolint/templates/.release-it.js',
 				},
-				includePackages: getPackagesMatching('./components/*'),
-			},
-			{
-				options: {
-					file: '.release-it.js',
-					templateFile: '.monorepolint/templates/.release-it.packages.js',
-				},
-				includePackages: getPackagesMatching('./packages/*'),
 			},
 			{
 				options: {

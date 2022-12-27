@@ -9,5 +9,11 @@ module.exports = {
 	rules: {
 		'@typescript-eslint/no-explicit-any': 0,
 		'no-restricted-syntax': ['error', 'ForInStatement', 'LabeledStatement', 'WithStatement'],
+		'import/no-extraneous-dependencies': [
+			'error',
+			{
+				devDependencies: ['*.js', '**/*.spec.ts', '**/*.spec.js', 'infra/**/*.ts'],
+			},
+		],
 	},
 };

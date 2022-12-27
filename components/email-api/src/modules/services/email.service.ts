@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CONFIG_TOKEN, RequestLogger } from '@vdtn359/nestjs-bootstrap';
 import sgMail from '@sendgrid/mail';
 import { EmailResponse } from 'src/modules/domain/responses/email.response';
-import { Config } from '../../config';
+import type { Config } from '../../config';
 import { EmailAttachments, EmailRequest } from '../domain/requests/email.request';
 import { ResourceService } from './resource.service';
 
@@ -37,9 +37,9 @@ export class EmailService {
 						content_id: attachment.name,
 					}))
 				),
-				text: emailRequest.body ?? '',
 				...(htmlContent && { html: htmlContent }),
-			});
+				...(emailRequest.body && { text: emailRequest.body }),
+			} as any);
 			this.logger.info('Email response', result);
 
 			return {
