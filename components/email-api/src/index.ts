@@ -1,28 +1,24 @@
 import 'reflect-metadata';
-import { CONFIG_TOKEN, createApp, logger } from '@vdtn359/nestjs-bootstrap';
-import { Context, APIGatewayProxyEvent } from 'aws-lambda';
+import { CONFIG_TOKEN, RootLogger } from '@vdtn359/nestjs-bootstrap';
+import { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import awsLambdaFastify, { PromiseHandler } from '@fastify/aws-lambda';
 import { isLambda } from 'src/utils/environment';
-import { Config, Config as ConfigType } from './config';
-import { AppModule } from './app.module';
-
-async function bootstrap() {
-	const app = await createApp(AppModule);
-	const config: ConfigType = app.get(CONFIG_TOKEN);
-	logger.info(`Config: ${config.toString()}`);
-
-	return app;
-}
+import { bootstrap } from 'src/app';
+import type { Config } from './config';
 
 let cachedHandler: Promise<PromiseHandler>;
 
 export const handler = async (event: APIGatewayProxyEvent, context: Context) => {
+	let logger = console;
 	try {
 		if (!cachedHandler) {
 			cachedHandler = bootstrap().then(async (app) => {
 				const fastify = app.getHttpAdapter().getInstance();
 				await app.init();
-				const handlerInstance = awsLambdaFastify(fastify);
+				logger = app.get(RootLogger);
+				const handlerInstance = awsLambdaFastify(fastify, {
+					decorateRequest: true,
+				});
 				await fastify.ready();
 				return handlerInstance;
 			});
@@ -35,7 +31,7 @@ export const handler = async (event: APIGatewayProxyEvent, context: Context) => 
 	}
 };
 
-if (isLambda()) {
+if (!isLambda()) {
 	bootstrap().then(async (app) => {
 		const config: Config = app.get(CONFIG_TOKEN);
 		await app.listen(config.get('PORT'), config.get('APP_HOST'));

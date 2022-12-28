@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CONFIG_TOKEN } from '@vdtn359/nestjs-bootstrap';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import type { Config } from '../../config';
+import type { Config } from 'src/config';
 
 @Injectable()
 export class ResourceService {

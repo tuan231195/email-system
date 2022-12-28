@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { NestjsBootstrapModule } from '@vdtn359/nestjs-bootstrap';
 import { isLambda } from 'src/utils/environment';
-import { EmailModule } from './modules/email.module';
+import { EmailModule } from './modules/email/email.module';
 import { config } from './config';
 
 const { version } = require('../package.json');
